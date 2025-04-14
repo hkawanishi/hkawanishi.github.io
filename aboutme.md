@@ -1,2 +1,2 @@
 
-My name is Hiromi Kawanishi. I am a Cat Volunteer
+I am a Cat Volunteer
