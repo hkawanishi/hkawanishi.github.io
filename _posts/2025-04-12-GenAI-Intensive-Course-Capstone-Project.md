@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Turning Legal Jargon into Plain English (with Emoji!): A Gen AI Translator for Terms of Service
-subtitle: GenAI Intensive Course 2025Q1 Capstone Project
+title: Turning Legal Jargon into Plain English with emoji 
+subtitle: A Gen AI Translator for Terms of Service
 gh-repo: hkawanishi/GenAI-Intensive-Course
 author: Hiromi
 ---
