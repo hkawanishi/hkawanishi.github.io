@@ -83,6 +83,20 @@ As you can see, Few-Shot Prompting is a relatively straightforward technique tha
 
 ### Pairing Original and Translated Text
 
-I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea: what if I could display the original legal terms directly alongside their easy-to-understand translations? To achieve this, I thought about leveraging Gemini API's JSON mode...
+I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that theoriginal legal terms and their corresponding translations were provided in a structured format. The results were shown below:
+
+`````
+[
+    {
+        "Original": "These Terms of Service constitute a legally binding agreement between you (\"Customer,\" \"you,\" or \"your\") and Dig-A-Hole (\"Dig-A-Hole,\" \"we,\" \"us,\" or \"our\"). By using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms.",
+        "Translated": "This is like a pinky swear 🤝 between you (that's \"you\" 😉) and us (that's \"Dig-A-Hole\" 🕳️). By using our services, you are saying \"I get it, and I agree!\" 👍"
+    },
+    {
+        "Original": "Dig-A-Hole provides a facility where customers can engage in the activity of digging holes in designated areas of a field. Our services are intended for recreational exercise and stress relief.",
+        "Translated": "We provide a place where you can dig holes 🕳️ to your heart's content! It's great for exercise 💪 and chilling out 😌."
+    },
+    ...
+`````
+
 
  
