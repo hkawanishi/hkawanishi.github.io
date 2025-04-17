@@ -98,5 +98,46 @@ I was really happy with the friendlier translations achieved with Few-Shot Promp
     ...
 `````
 
+### Evaluating the Translation. Did it Pass the 'Plain English' Test?
+
+My goal was to make those intimidating Terms of Service feel like a friendly chat. But how well did my Gen AI translator actually pull that off? One of the coolest parts of this project was getting AI to evaluate AI! Here, I used Gemini to assess if the translations were done right by focusing on three key areas.
+
+* **Clarity:** The translation is easy to understand for everyone. 
+* **Friendliness:** The translation should be approachable, casual, and enthusiastic tone, using emojis and informal language to create a positive and engaging experience for the reader. 
+* **Completeness:** Is it accurate? Does it fully conveys the core meaning and key pieces of information are presented? All the essential facts, actions, entities, and relionship described need to be captured.
+
+To get a sense of this, I also set up a simple rating scale from 1 (very bad) to 5 (very good) and evaluated a few examples.
+
+Let's look at the evaluation of one of the terms.
+
+`````
+Original: These Terms of Service constitute a legally binding agreement between you ("Customer," "you," or "your") and Dig-A-Hole ("Dig-A-Hole," "we," "us," or "our"). By using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms.
+Translated: This is like a pinky swear 🤝 between you (that's "you" 😉) and us (that's "Dig-A-Hole" 🕳️). By using our services, you are saying "I get it, and I agree!" 👍
+Verbose Evaluation:
+## Evaluation
+
+**STEP 1: Assessment**
+
+*   **Clarity:** The translation is very clear and uses simple language. The analogy of a "pinky swear" is effective in conveying the binding nature of the agreement.
+*   **Friendliness:** The translation is extremely friendly, using emojis and informal language to create a welcoming tone. The use of phrases like "that's 'you' 😉" and "I get it, and I agree! 👍" adds to the friendly and approachable feel.
+*   **Completeness:** The translation captures the core meaning of the original sentence. It identifies the parties involved (you and Dig-A-Hole) and explains that using the services implies agreement with the terms. While it simplifies the legal jargon, it retains the essential information.
+
+**STEP 2: Scoring**
+
+Based on the rubric, the translation deserves a rating of **5 (Very good)**. It is accurate, clear, friendly, and complete, effectively conveying the meaning of the original sentence in a simplified and engaging manner.
+
+Structured Evaluation: VERY_GOOD
+
+`````
+
+My evaluation of this translation highlighted it as **very good**. It was clear, extremely friendly with the emoji use and casual tone, and it effectively conveyed the core meaning of the original without getting bogged down in legal jargon. It earned a top score of 5!
+
+I should note that, to perform this evaluation, I found that the `chat` functionality in the Gemini API within my Kaggle environment at the time required using a model like `gemini-2.0-flash`. While I initially leaned towards `gemini-1.5-pro` for its general capabilities, `gemini-2.0-flash` was readily available for this specific evaluation task using the `chat` endpoint. The core translation itself was performed using Gemini's general content generation capabilities.
+
+Overall, my initial evaluation suggests that the Gen AI translator is doing a pretty good job of turning complex legal speak into something much more approachable and understandable for everyone.
+
+
+
+
 
  
