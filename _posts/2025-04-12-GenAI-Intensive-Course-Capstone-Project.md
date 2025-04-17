@@ -137,7 +137,7 @@ I should note that, to perform this evaluation, I found that the `chat` function
 
 Overall, my initial evaluation suggests that the Gen AI translator is doing a pretty good job of turning complex legal speak into something much more approachable and understandable for everyone.
 
-## Ask Away! Making the Terms of Service Interactive
+### Ask Away! Making the Terms of Service Interactive
 
 I was really happy with how the friendly translator turned out! But then I started thinking, "What could make this even cooler?" While this wasn’t part of my original project plan, I decided to go on a little side quest: making the Terms of Service interactive.
 
@@ -177,7 +177,9 @@ But through my own experimenting, I found that using RAG is often more accurate,
 
 With RAG, the AI is grounded in the actual document. If the answer isn’t there, it tends to say so, rather than guessing or hallucinating. In my limited testing, this led to fewer made-up answers and a more trustworthy user experience.
 
+## Conclusion
 
+In conclusion, this project demonstrates the powerful potential of Gen AI to transform complex legal documents like Terms of Service into clear, accessible language, even adding a touch of friendly personality with emojis. By combining translation, few-shot prompting for style, and evaluation, I've shown how AI can bridge the gap between dense legal jargon and everyday understanding. The "Ask Away!" feature further highlights the potential for interactive engagement with such documents, making information retrieval easier than ever.
 
 
 
