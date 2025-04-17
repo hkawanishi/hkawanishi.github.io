@@ -20,6 +20,7 @@ Here's a breakdown of the key steps I took to build this Terms of Service transl
 * Employed few-shot prompting with examples to guide Gemini in incorporating relevant emojis.
 * Structured the output using JSON to directly link original legal terms to their simplified translations.
 * Utilized Gemini again to evaluate the quality of the translated output based on defined metrics, criteria, and a rating rubric.
+* Making the Terms of Service Interactive using Embedding and RAG.
 
 This multi-step process allowed me to create a tool that not only translates complex legal text but also aims to make it more accessible and engaging.
 
@@ -135,6 +136,46 @@ My evaluation of this translation highlighted it as **very good**. It was clear,
 I should note that, to perform this evaluation, I found that the `chat` functionality in the Gemini API within my Kaggle environment at the time required using a model like `gemini-2.0-flash`. While I initially leaned towards `gemini-1.5-pro` for its general capabilities, `gemini-2.0-flash` was readily available for this specific evaluation task using the `chat` endpoint. The core translation itself was performed using Gemini's general content generation capabilities.
 
 Overall, my initial evaluation suggests that the Gen AI translator is doing a pretty good job of turning complex legal speak into something much more approachable and understandable for everyone.
+
+## Ask Away! Making the Terms of Service Interactive
+
+I was really happy with how the friendly translator turned out! But then I started thinking, "What could make this even cooler?" While this wasn’t part of my original project plan, I decided to go on a little side quest: making the Terms of Service interactive.
+
+This part of the project is a sneak peek into what a "version 2.0" could look like. It is letting users ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
+
+To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to "search" through the document for the best answers to your questions.
+
+Here’s how it works:
+
+1. First, the Terms of Service document is broken into chunks, and each chunk is turned into a special numerical fingerprint called an embedding. These embeddings represent the meaning of the text.
+2. When someone asks a question (like “What is the cancellation policy?”), the question gets turned into its own embedding.
+3. The system then compares the question’s embedding to the document’s embeddings to find the parts of the document with the most similar meaning.
+4. Finally, the AI takes those relevant chunks and writes up a helpful, plain-English answer—with a friendly tone and even some emojis!
+
+For example, this is a Prompt, Question and Passage which the AI found the information:
+
+`````
+You are a very friendly bot that answers questions using text from the reference passage included below.
+Be sure to respond in a complete sentence, but being casual and very friendly. Make sure to include some appropriate emoji.
+You need to use easy-to-understand English instead of using legal terms. If the passage is irrelevant to the answer, you
+may say that you can not find the information.
+
+QUESTION: What is the cancellation policy?
+
+PASSAGE: 3. Subscription Terms and Payment ● Minimum Subscription Period: All subscriptions have a minimum commitment of one (1) full month. ● Subscription Fees: The monthly subscription fee will be clearly communicated on our website or at our facility. ● Billing: Subscription fees will be billed on a recurring monthly basis, commencing on the date of your initial subscription. ● Payment Methods: We accept the payment methods specified on our website or at our facility. You agree to provide accurate and up-to-date payment information. ● Cancellation: You may cancel your subscription at any time. However, due to the minimum one-month commitment, you will be responsible for the full payment of the current billing cycle in which you cancel, and your access will continue until the end of that paid month. No refunds will be provided for partial months.
+`````
+
+And the AI's answer to the question "what is the cancellation policy?" is:
+
+`````
+Hey there! 👋 You can cancel your subscription whenever you want, but since there's a one-month minimum, you'll still need to pay for the current month you're in. Your access will keep going until the end of that month you've already paid for. Just so you know, there are no refunds for partial months. 😊
+`````
+This feature turns a static document into an interactive experience. It’s still a prototype, but the idea of blending translation, search, and conversation feels like a promising step toward making everyday legal documents way more accessible. 
+Note that it is true that you might be able to achieve something similar using a few-shot prompt—just feed the whole Terms of Service into the AI and ask something like, “Can you tell me the cancellation policy?” In many cases, that actually works just fine!
+
+But through my own experimenting, I found that using RAG is often more accurate, especially when the document doesn’t contain an answer. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently give an answer about something like shovel rentals which is totally unrelated.
+
+With RAG, the AI is grounded in the actual document. If the answer isn’t there, it tends to say so, rather than guessing or hallucinating. In my limited testing, this led to fewer made-up answers and a more trustworthy user experience.
 
 
 
