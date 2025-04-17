@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Turning Legal Jargon into Plain English with emoji 
-subtitle: A Gen AI Translator for Terms of Service
+title: Turning Legal Jargon into Plain English with Emoji 
+subtitle: A Gen AI Translator for Terms of Service Document
 gh-repo: hkawanishi/GenAI-Intensive-Course
 author: Hiromi
 ---
 ## Introduction
 
-Let's face it, wading through the legal complexities of Terms of Service agreements is rarely a highlight of anyone's day. For my Gen AI Intensive Course project, I initially aimed to explore sports data analysis with Gemini, envisioning summaries of exciting basketball or baseball matches. However, a seemingly insurmountable hurdle appeared: the Terms of Service of my chosen data source made it unclear whether using the data for machine learning was even permitted due to the dense legal language. This experience highlighted a common problem, the inaccessibility of legal documents. It was this frustration that ignited the idea for my capstone project, **a Terms of Service translator** powered by Gen AI. My goal is to transform convoluted legal jargon into clear, casual English and showcase the practical applications of the skills I gained during the intensive course.
+Let's face it, wading through the legal complexities of Terms of Service agreements is rarely a highlight of anyone's day. For my Gen AI Intensive Course project, I initially aimed to explore sports data analysis with Gemini, envisioning summaries of exciting basketball or baseball matches. However, a seemingly insurmountable hurdle appeared: the dense legal language of my chosen data source's Terms of Service made it unclear whether using the data for machine learning was even permitted. This experience highlighted a common problem: the inaccessibility of legal documents. It was this frustration that ignited the idea for my capstone project, **a Terms of Service translator** powered by Gen AI. My goal is to transform convoluted legal jargon into clear, casual English and showcase the practical applications of the skills I gained during the intensive course.
 
 ## My Approach
 
@@ -20,7 +20,7 @@ Here's a breakdown of the key steps I took to build this Terms of Service transl
 * Employed few-shot prompting with examples to guide Gemini in incorporating relevant emojis.
 * Structured the output using JSON to directly link original legal terms to their simplified translations.
 * Utilized Gemini again to evaluate the quality of the translated output based on defined metrics, criteria, and a rating rubric.
-* Making the Terms of Service Interactive using Embedding and RAG.
+* Implemented interactivity in the Terms of Service using Embedding and RAG.
 
 This multi-step process allowed me to create a tool that not only translates complex legal text but also aims to make it more accessible and engaging.
 
@@ -28,13 +28,13 @@ This multi-step process allowed me to create a tool that not only translates com
 
 ### Initial Setup
 
-My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google's documentation provides the steps for this, and it's important to secure your key once you have it.
+My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure your key once you have it.
 
-With the technical setup done, I needed a Terms of Service document. To steer clear of copyright issues with real-world examples, I created my own for a quirky fictitious company named "Dig-A-Hole." This company offers a subscription for digging holes in a field as a stress reliever and form of exercise. I outlined the service's terms in a PDF, which was then ready for the AI.
+With the technical setup done, I needed a Terms of Service document. To avoid copyright issues with real-world examples, I created my own for a quirky fictitious company named "Dig-A-Hole." This company offers a subscription for digging holes in a field as a stress reliever and form of exercise. I outlined the service's terms in a PDF, which was then ready for the AI.
 
 ### Reading the PDF document
 
-When I first started, the gemini-1.5-pro model caught my eye, mainly due to its massive context window. I figured, the longer the Terms of Service, the better this model would handle it. However, as things progressed and I started evaluating the output, my model choice actually changed, a little surprise I'll get into later.
+When I first started, the gemini-1.5-pro model caught my eye, mainly due to its massive context window. I figured, the longer the Terms of Service, the better this model would handle it. However, as things progressed and I started evaluating the output, my model choice actually changed, a little surprise I'll elaborate on later.
 
 So, with gemini-1.5-pro chosen for its ability to handle potentially long documents, I proceeded to the first task: summarizing our "Dig-A-Hole" Terms of Service. I used a simple prompt for this: "Please summarize the following terms of service in plain, easy-to-understand English." The resulting summary was quite good, providing a clear and easy-to-grasp overview, which looked like this:
 
@@ -57,7 +57,7 @@ One of the cool techniques I picked up during the Gen AI Intensive Course was "F
 
 ~~~
 few_shot_prompt = """
-Here are some examples of how to translate leagal terms of service and their friendly summaries using emoji:
+Here are some examples of how to translate legal terms of service and their friendly summaries using emoji:
 
 Original: "We reserve the right to accept or refuse membership in our discretion." 
 Translated: "We get to say yay 👍 or nay 👎 to memberships, just because we can💪!"
@@ -65,7 +65,7 @@ Translated: "We get to say yay 👍 or nay 👎 to memberships, just because we 
 Original: "To the maximum extent permitted by law, you agree that the Company shall not be held liable for any injuries, damages, or losses incurred in connection with the use of our services or products. By using our services, you waive any right to bring a claim or lawsuit against us for such injuries."
 Translated: "Oops! If you trip, slip, or fall dramatically and get hurt while using our stuff, please don’t sue us 😅🙏. By hanging out with us, you're saying, 'Okay cool, I won't blame you if I bonk myself💖'"
 
-Please summarize the following terms of servicein plain, easy-to-undersand English with emoji.
+Please summarize the following terms of service in plain, easy-to-undersand English with emoji.
 """
 ~~~
 
@@ -105,7 +105,7 @@ My goal was to make those intimidating Terms of Service feel like a friendly cha
 
 * **Clarity:** The translation is easy to understand for everyone. 
 * **Friendliness:** The translation should be approachable, casual, and enthusiastic tone, using emojis and informal language to create a positive and engaging experience for the reader. 
-* **Completeness:** Is it accurate? Does it fully conveys the core meaning and key pieces of information are presented? All the essential facts, actions, entities, and relionship described need to be captured.
+* **Completeness:** Is it accurate? Does it fully conveys the core meaning, and are key pieces of information presented? All the essential facts, actions, entities, and relationships described need to be captured.
 
 To get a sense of this, I also set up a simple rating scale from 1 (very bad) to 5 (very good) and evaluated a few examples.
 
@@ -141,17 +141,17 @@ Overall, my initial evaluation suggests that the Gen AI translator is doing a pr
 
 I was really happy with how the friendly translator turned out! But then I started thinking, "What could make this even cooler?" While this wasn’t part of my original project plan, I decided to go on a little side quest: making the Terms of Service interactive.
 
-This part of the project is a sneak peek into what a "version 2.0" could look like. It is letting users ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
+This part of the project is a sneak peek into what a "version 2.0" could look like. It allows users to ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
 
-To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to "search" through the document for the best answers to your questions.
+To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the document for the best answers to your questions. It's kind of like an ultra-helpful chatbot with a legal cheat sheet.
 
 Here’s how it works:
 
-1. First, the Terms of Service document is broken into chunks, and each chunk is turned into a special numerical fingerprint called an embedding. These embeddings represent the meaning of the text.
-2. When someone asks a question (like “What is the cancellation policy?”), the question gets turned into its own embedding.
-3. The system then compares the question’s embedding to the document’s embeddings to find the parts of the document with the most similar meaning.
-4. Finally, the AI takes those relevant chunks and writes up a helpful, plain-English answer—with a friendly tone and even some emojis!
-
+1. First, the Terms of Service document is broken into chunks, and each chunk is turned into a special numerical fingerprint called an embedding. These embeddings capture the semantic meaning of the text.
+2. When someone asks a question (like “What is the cancellation policy?”), the question is also turned into its own embedding.
+3. The system compares the question’s embedding to the document’s embeddings to find the most relevant sections.
+4. Finally, the AI takes those chunks and generates a helpful, plain-English answer with a friendly tone and even some emojis! 🎯✨
+    
 For example, this is a Prompt, Question and Passage which the AI found the information:
 
 `````
@@ -173,13 +173,17 @@ Hey there! 👋 You can cancel your subscription whenever you want, but since th
 This feature turns a static document into an interactive experience. It’s still a prototype, but the idea of blending translation, search, and conversation feels like a promising step toward making everyday legal documents way more accessible. 
 Note that it is true that you might be able to achieve something similar using a few-shot prompt—just feed the whole Terms of Service into the AI and ask something like, “Can you tell me the cancellation policy?” In many cases, that actually works just fine!
 
-But through my own experimenting, I found that using RAG is often more accurate, especially when the document doesn’t contain an answer. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently give an answer about something like shovel rentals which is totally unrelated.
+But through my own experimenting, I found that using RAG is often more accurate, especially when the document does not contain an answer. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently provide an answer about something like shovel rentals, which is entirely unrelated.
 
 With RAG, the AI is grounded in the actual document. If the answer isn’t there, it tends to say so, rather than guessing or hallucinating. In my limited testing, this led to fewer made-up answers and a more trustworthy user experience.
 
 ## Conclusion
 
 In conclusion, this project demonstrates the powerful potential of Gen AI to transform complex legal documents like Terms of Service into clear, accessible language, even adding a touch of friendly personality with emojis. By combining translation, few-shot prompting for style, and evaluation, I've shown how AI can bridge the gap between dense legal jargon and everyday understanding. The "Ask Away!" feature further highlights the potential for interactive engagement with such documents, making information retrieval easier than ever.
+
+## Future Work Recommendation
+
+This was a really fun project to tackle in a short amount of time! For the future project idea, it would be fun to explore expanding it by supporting a wider range of legal document types beyond just Terms of Service, like privacy policies or even parts of contracts, and perhaps even adding the ability to read Terms of Service directly from a URL. Another interesting direction could involve incorporating user feedback mechanisms to continuously refine the translation quality and tailor the output to better meet individual comprehension needs.  
 
 
 
