@@ -173,7 +173,7 @@ Now, you might be thinking, "Could I just use a few-shot prompt for this?" You c
 
 ## Conclusion
 
-So, what's the takeaway? This project shows just how powerful Gen AI can be when it comes to tackling those complex legal documents, like Terms of Service, and making them clear and accessible, even adding a bit of friendly personality with emojis. By putting together translation, style guidance, and evaluation, I think we've seen how AI can help bridge that gap between dense legal speak and what we can all understand. And with the "Ask Away!" feature, getting the information you need from these documents could become easier than ever.
+I'm excited to share a solution that makes Terms of Service much easier to understand, all thanks to the cool techniques I picked up during the 5 Day Gen AI Intensive Course. This project tackles the challenge of dense legal language by translating it into clear, accessible English something I found particularly rewarding to build. The interactive "Ask Away!" feature further empowers users to easily find the specific legal information they need.
 
 ## Future Work Recommendation
 
