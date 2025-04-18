@@ -9,51 +9,49 @@ author: Hiromi
 
 Let’s face it, digging through the legal maze of Terms of Service agreements isn’t exactly anyone’s idea of fun. For my Gen AI Intensive Course project, I originally planned to dive into sports data analysis with Gemini, imagining summaries of exciting basketball or baseball games. But I hit a roadblock when I realized the legal wording in my chosen data source's Terms of Service was so complicated, I couldn't tell if using the data for machine learning was even allowed. That frustration got me thinking about a bigger issue, which is how difficult legal documents can be to understand. And that’s what sparked the idea for my capstone project, **a Terms of Service translator powered by Gen AI**. My goal is to turn confusing legal jargon into clear, casual English and to show how the tools and techniques I’ve learned can be put to good use.
 
-## My Approach
+## How I Built This: A Step-by-Step Journey
 
-Here's a breakdown of the key steps I took to build this Terms of Service translator:
+So, how did I go about building this translator to make sense of those tricky Terms of Service? Let me walk you through the steps I took:
 
-* Created a sample Terms of Service document for a fictitious company, "Dig-A-Hole," offering a stress-relief digging service, and saved it as a PDF.
-* Set up the necessary Google API key to access the Gen AI models.
-* Selected a suitable Gemini model for language processing.
-* Read the PDF document and used a prompt to instruct Gemini to summarize the legal text into plain, easy-to-understand English.
-* Employed few-shot prompting with examples to guide Gemini in incorporating relevant emojis.
-* Structured the output using JSON to directly link original legal terms to their simplified translations.
-* Utilized Gemini again to evaluate the quality of the translated output based on defined metrics, criteria, and a rating rubric.
-* Implemented interactivity in the Terms of Service using Embedding and RAG.
+* It all began with the creation of a sample Terms of Service document for a fun, made-up company called "Dig-A-Hole." I saved these digging rules as a PDF, ready for AI magic.
+* Then, I secured my access to the Gen AI world by setting up the necessary Google API key.
+* Next, I carefully selected a Gemini model that seemed well-suited for the task of understanding and simplifying legal language.
+* My initial move was to read the PDF and use a clear prompt to ask Gemini to summarize the legal text in plain, easy-to-grasp English.
+* To add a touch of friendliness, I used few-shot prompting, showing Gemini examples of translations that included relevant emoji.
+* To make the results easy to follow, I structured the output using JSON, directly connecting the original legal terms with their newly translated texts.
+* In an interesting twist, I even used Gemini to evaluate the quality of its own translation work, based on criteria I defined.
+* And to take it a step further, I implemented interactive querying of the Terms of Service using Embeddings and RAG, allowing users to ask specific questions and get direct answers.
 
-This multi-step process allowed me to create a tool that not only translates complex legal text but also aims to make it more accessible and engaging.
+This step-by-step approach allowed me to create a tool that I hope makes those often-intimidating legal documents much more approachable and understandable.
 
 ## Details of how I did it
 
 ### Initial Setup
 
-My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure your key once you have it.
+My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure the key once obtained it.
 
-With the technical setup done, I needed a Terms of Service document. To avoid copyright issues with real-world examples, I created my own for a quirky fictitious company named "Dig-A-Hole." This company offers a subscription for digging holes in a field as a stress reliever and form of exercise. I outlined the service's terms in a PDF, which was then ready for the AI.
+With the technical setup done, I needed a Terms of Service document. To avoid copyright issues with real-world examples, I created my own for a quirky fictitious company named "Dig-A-Hole." This company offers a subscription for digging holes in a field as a stress reliever and form of exercise. I outlined the service's terms and saved it in a PDF.
 
-### Reading the PDF document
+### Selecting a Model and Reading the PDF document
 
 When I first started, the gemini-1.5-pro model caught my eye, mainly due to its massive context window. I figured, the longer the Terms of Service, the better this model would handle it. However, as things progressed and I started evaluating the output, my model choice actually changed, a little surprise I'll elaborate on later.
 
-So, with gemini-1.5-pro chosen for its ability to handle potentially long documents, I proceeded to the first task: summarizing our "Dig-A-Hole" Terms of Service. I used a simple prompt for this: "Please summarize the following terms of service in plain, easy-to-understand English." The resulting summary was quite good, providing a clear and easy-to-grasp overview, which looked like this:
+So, with the model chosen, I proceeded to the first task: summarizing our "Dig-A-Hole" Terms of Service. I used a simple prompt: "Please summarize the following terms of service in plain, easy-to-understand English." The resulting summary was quite good, providing a clear and easy-to-grasp overview, which looked like this:
 
 `````
-This is a summary of the Dig-A-Hole Terms of Service:
+Dig-A-Hole's Terms of Service basically say:
 
-What Dig-A-Hole offers: Dig-A-Hole lets you dig holes in their field for fun and stress relief. They offer a free trial dig, monthly subscriptions, and optional shovel rentals.
-
-Agreement: By using their services, you agree to these terms.
-
-Subscriptions: Subscriptions are monthly and require a one-month minimum commitment. You can cancel anytime, but you still have to pay for the current month. No refunds for partial months. The price is listed on their website or at the facility.
-
-Shovel Rental: You can rent shovels for an extra fee, but you're responsible for any damage or loss (beyond normal wear and tear).
+* Digging Holes: You can dig holes at their facility for fun and stress relief. They offer a free trial dig, then you need a monthly subscription. You can also rent shovels.
+* The Agreement: By using their services, you agree to these rules.
+* Subscriptions: Subscriptions are monthly and you have to pay for the whole month even if you cancel early. The price is on their website or at the facility.
+* Shovel Rental: You can rent shovels for an extra fee and you're responsible for any damage beyond normal wear and tear.
+...
 `````
 While this was clear, it felt a little… formal. I wanted to inject some personality and make it more approachable.
 
 ### Make it Friendlier. Enter Few-Shot Prompt!
 
-One of the cool techniques I picked up during the Gen AI Intensive Course was "Few-Shot Prompting." It's like giving Gemini a few examples to learn from, showing it the style and tone you're aiming for. I wanted the translations to be more casual and friendly, sprinkled with some relevant emojis. So, I provided Gemini with a few examples like this:
+One of the cool techniques I picked up during the Gen AI Intensive Course was "Few-Shot Prompting." It's like giving Gemini a few examples to learn from, showing it the style and tone you're aiming for. I wanted the translations to be more casual and friendly, sprinkled with some relevant emoji. So, I provided Gemini with a few examples like this:
 
 ~~~
 few_shot_prompt = """
@@ -69,39 +67,40 @@ Please summarize the following terms of service in plain, easy-to-undersand Engl
 """
 ~~~
 
-Here, I was essentially asking Gemini to channel its inner friendly neighbor. I made sure to include emojis in the examples and explicitly asked for them in the final translation. The results were exactly what I was hoping for. Much more casual and fun!
+Here, I was essentially asking Gemini to channel its inner friendly neighbor. I made sure to include emoji in the examples and explicitly asked for them in the final translation. The results were exactly what I was hoping for. Much more casual and fun!
  
 `````
-Welcome to Dig-A-Hole! 🕳️  Here's the simple version of our rules:
+Want to dig a hole? 🕳️ Here's the deal:
 
-* **What we do:** We give you a place to dig holes!  It's for fun and stress relief. 😄  You can dig by yourself or with friends.👯‍♀️
-* **Free Trial:**  First dig is on us! 🎉
-* **Membership:**  If you like digging, you can sign up for a monthly membership. 🗓️  You're in for at least one month.  You can cancel anytime, but you still have to pay for the current month. 💰 No refunds for partial months.
-* **Shovels:** We have shovels you can rent. 🥄  Pay extra, and please bring them back in one piece (normal wear and tear is okay).  If you break or lose it, you'll have to pay for it. 💸
+1. **The Agreement:** This is a contract. By digging with us, you agree to these rules. 🤝
+2. **What We Do:** We provide a place for you to dig holes for fun and stress relief!  We offer a free trial dig, then monthly subscriptions.  You can also rent a shovel. 🥄
+3. **Subscriptions & Payment:** Subscriptions are for a minimum of one month.  We'll tell you the price on our website or at our facility.  You can cancel anytime, but you still have to pay for the current month.  No refunds for partial months. 🗓️💰
+4. **Shovel Rental:**  You can rent a shovel 🥄 for an extra fee.  Please return it in good condition (normal wear and tear is okay).  We might charge you if you break or lose it.
+...
 `````
 
 As you can see, Few-Shot Prompting is a relatively straightforward technique that can significantly influence the tone and style of Gemini's output, making the translated texts much more aligned with my vision.
 
 ### Pairing Original and Translated Text
 
-I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that theoriginal legal terms and their corresponding translations were provided in a structured format. The results were shown below:
+I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that the original legal terms and their corresponding translations were provided in a structured format. The results were shown below:
 
 `````
 [
     {
         "Original": "These Terms of Service constitute a legally binding agreement between you (\"Customer,\" \"you,\" or \"your\") and Dig-A-Hole (\"Dig-A-Hole,\" \"we,\" \"us,\" or \"our\"). By using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms.",
-        "Translated": "This is like a pinky swear 🤝 between you (that's \"you\" 😉) and us (that's \"Dig-A-Hole\" 🕳️). By using our services, you are saying \"I get it, and I agree!\" 👍"
+        "Translated": "This is like a pinky swear 🤝 between you (that's you!) and us (Dig-A-Hole!). By playing here, you're saying you get the rules and promise to follow them. 💖"
     },
     {
         "Original": "Dig-A-Hole provides a facility where customers can engage in the activity of digging holes in designated areas of a field. Our services are intended for recreational exercise and stress relief.",
-        "Translated": "We provide a place where you can dig holes 🕳️ to your heart's content! It's great for exercise 💪 and chilling out 😌."
+        "Translated": "We've got a place where you can dig holes to your heart's content! 🕳️ It's great for exercise and chilling out. 😎"
     },
     ...
 `````
 
 ### Evaluating the Translation. Did it Pass the 'Plain English' Test?
 
-My goal was to make those intimidating Terms of Service feel like a friendly chat. But how well did my Gen AI translator actually pull that off? One of the coolest parts of this project was getting AI to evaluate AI! Here, I used Gemini to assess if the translations were done right by focusing on three key areas.
+My goal was to make those intimidating Terms of Service feel like a friendly chat. But how well did my Gen AI translator actually pull that off? And guess what? I can make AI to evaluate AI! Here, I used Gemini to assess if the translations were done right by providing three key areas.
 
 * **Clarity:** The translation is easy to understand for everyone. 
 * **Friendliness:** The translation should be approachable, casual, and enthusiastic tone, using emojis and informal language to create a positive and engaging experience for the reader. 
@@ -113,21 +112,19 @@ Let's look at the evaluation of one of the terms.
 
 `````
 Original: These Terms of Service constitute a legally binding agreement between you ("Customer," "you," or "your") and Dig-A-Hole ("Dig-A-Hole," "we," "us," or "our"). By using our services, you acknowledge that you have read, understood, and agree to be bound by these Terms.
-Translated: This is like a pinky swear 🤝 between you (that's "you" 😉) and us (that's "Dig-A-Hole" 🕳️). By using our services, you are saying "I get it, and I agree!" 👍
+Translated: This is like a pinky swear 🤝 between you (that's you!) and us (Dig-A-Hole!). By playing here, you're saying you get the rules and promise to follow them. 💖
 Verbose Evaluation:
 ## Evaluation
 
-**STEP 1: Assessment**
+**STEP 1:**
 
-*   **Clarity:** The translation is very clear and uses simple language. The analogy of a "pinky swear" is effective in conveying the binding nature of the agreement.
-*   **Friendliness:** The translation is extremely friendly, using emojis and informal language to create a welcoming tone. The use of phrases like "that's 'you' 😉" and "I get it, and I agree! 👍" adds to the friendly and approachable feel.
-*   **Completeness:** The translation captures the core meaning of the original sentence. It identifies the parties involved (you and Dig-A-Hole) and explains that using the services implies agreement with the terms. While it simplifies the legal jargon, it retains the essential information.
+*   **Clarity:** The translation uses a "pinky swear" analogy to explain the legally binding agreement, which is clear and easy to understand. It simplifies the language effectively.
+*   **Friendliness:** The translation is extremely friendly, using phrases like "that's you!" and emojis (🤝, 💖). The tone is enthusiastic and welcoming.
+*   **Completeness:** The translation captures the core meaning of the original sentence, explaining that using the services means agreeing to the terms.
 
-**STEP 2: Scoring**
+**STEP 2:**
 
-Based on the rubric, the translation deserves a rating of **5 (Very good)**. It is accurate, clear, friendly, and complete, effectively conveying the meaning of the original sentence in a simplified and engaging manner.
-
-Structured Evaluation: VERY_GOOD
+Based on the rubric, the translation is very good.
 
 `````
 
@@ -143,11 +140,11 @@ I was really happy with how the friendly translator turned out! But then I start
 
 This part of the project is a sneak peek into what a "version 2.0" could look like. It allows users to ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
 
-To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the document for the best answers to your questions. It's kind of like an ultra-helpful chatbot with a legal cheat sheet.
+To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the provided document for the best answers to your questions. It's kind of like an ultra-helpful chatbot with a legal cheat sheet.
 
 Here’s how it works:
 
-1. First, the Terms of Service document is broken into chunks, and each chunk is turned into a special numerical fingerprint called an embedding. These embeddings capture the semantic meaning of the text.
+1. First, the Terms of Service document is broken into chunks, and each chunk is transformed into a vector representation called an embedding. These embeddings capture the semantic meaning of the text.
 2. When someone asks a question (like “What is the cancellation policy?”), the question is also turned into its own embedding.
 3. The system compares the question’s embedding to the document’s embeddings to find the most relevant sections.
 4. Finally, the AI takes those chunks and generates a helpful, plain-English answer with a friendly tone and even some emojis! 🎯✨
@@ -170,16 +167,13 @@ And the AI's answer to the question "what is the cancellation policy?" is:
 `````
 Hey there! 👋 You can cancel your subscription whenever you want, but since there's a one-month minimum, you'll still need to pay for the current month you're in. Your access will keep going until the end of that month you've already paid for. Just so you know, there are no refunds for partial months. 😊
 `````
-This feature turns a static document into an interactive experience. It’s still a prototype, but the idea of blending translation, search, and conversation feels like a promising step toward making everyday legal documents way more accessible. 
-Note that it is true that you might be able to achieve something similar using a few-shot prompt—just feed the whole Terms of Service into the AI and ask something like, “Can you tell me the cancellation policy?” In many cases, that actually works just fine!
+This feature turns a static document into an interactive experience. It’s still a prototype, but the idea of blending translation, search, and conversation feels like a promising step toward making everyday legal documents more accessible. 
 
-But through my own experimenting, I found that using RAG is often more accurate, especially when the document does not contain an answer. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently provide an answer about something like shovel rentals, which is entirely unrelated.
-
-With RAG, the AI is grounded in the actual document. If the answer isn’t there, it tends to say so, rather than guessing or hallucinating. In my limited testing, this led to fewer made-up answers and a more trustworthy user experience.
+Now, you might be thinking, "Could I just use a few-shot prompt for this?" You could certainly try feeding the entire Terms of Service to the AI and asking something like, “What's the cancellation policy?” And you know what? That probably works. But what I quickly discovered in my testing is that RAG is often significantly more reliable, especially when the answer isn't explicitly in the document. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently provide an answer about something like shovel rentals, which is entirely unrelated. With RAG, because it's retrieving information directly from the document, it's much better at saying "I don't know" instead of making things up, which ultimately builds more trust.
 
 ## Conclusion
 
-In conclusion, this project demonstrates the powerful potential of Gen AI to transform complex legal documents like Terms of Service into clear, accessible language, even adding a touch of friendly personality with emojis. By combining translation, few-shot prompting for style, and evaluation, I've shown how AI can bridge the gap between dense legal jargon and everyday understanding. The "Ask Away!" feature further highlights the potential for interactive engagement with such documents, making information retrieval easier than ever.
+So, what's the takeaway? This project shows just how powerful Gen AI can be when it comes to tackling those complex legal documents, like Terms of Service, and making them clear and accessible, even adding a bit of friendly personality with emojis. By putting together translation, style guidance, and evaluation, I think we've seen how AI can help bridge that gap between dense legal speak and what we can all understand. And with the "Ask Away!" feature, getting the information you need from these documents could become easier than ever.
 
 ## Future Work Recommendation
 
