@@ -140,7 +140,7 @@ I was really happy with how the friendly translator turned out! But then I start
 
 This part of the project is a sneak peek into what a "version 2.0" could look like. It allows users to ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
 
-To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the provided document for the best answers to your questions. It's kind of like an ultra-helpful chatbot with a legal cheat sheet.
+To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the **provided document** for the best answers to your questions. This is key because RAG ensures that the answers come directly from the Terms of Service document rather than the AI making things up or pulling information from elsewhere. It's kind of like an ultra helpful chatbot with a legal cheat sheet. 
 
 Here’s how it works:
 
