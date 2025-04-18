@@ -7,7 +7,7 @@ author: Hiromi
 ---
 ## Introduction
 
-Let’s face it, digging through the legal maze of Terms of Service agreements isn’t exactly anyone’s idea of fun. For my Gen AI Intensive Course project, I originally planned to dive into sports data analysis with Gemini, imagining summaries of exciting basketball or baseball games. But I hit a roadblock when I realized the legal wording in my chosen data source's Terms of Service was so complicated, I couldn't tell if using the data for machine learning was even allowed.That frustration got me thinking about a bigger issue, which is how difficult legal documents can be to understand. And that’s what sparked the idea for my capstone project, a Terms of Service translator powered by Gen AI. My goal is to turn confusing legal jargon into clear, casual English and to show how the tools and techniques I’ve learned can be put to good use.
+Let’s face it, digging through the legal maze of Terms of Service agreements isn’t exactly anyone’s idea of fun. For my Gen AI Intensive Course project, I originally planned to dive into sports data analysis with Gemini, imagining summaries of exciting basketball or baseball games. But I hit a roadblock when I realized the legal wording in my chosen data source's Terms of Service was so complicated, I couldn't tell if using the data for machine learning was even allowed. That frustration got me thinking about a bigger issue, which is how difficult legal documents can be to understand. And that’s what sparked the idea for my capstone project, **a Terms of Service translator powered by Gen AI**. My goal is to turn confusing legal jargon into clear, casual English and to show how the tools and techniques I’ve learned can be put to good use.
 
 ## My Approach
 
