@@ -356,7 +356,7 @@ db = chroma_client.get_or_create_collection(name=DB_NAME, embedding_function=emb
 db.add(documents=all_paragraphs, ids=[str(i) for i in range(len(all_paragraphs))])
 ```
 
-And then the query is entered. The question gets its meaning from Gemini, and ChromaDB users to find the similar chunks.
+And then the query is entered. The question gets its meaning from Gemini, and ChromaDB uses to find the similar chunks.
 ```
 # Switch to query mode when generating embeddings.
 embed_fn.document_mode = False
