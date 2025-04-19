@@ -116,7 +116,7 @@ As you can see, Few-Shot Prompting is a relatively straightforward technique tha
 ### Pairing Original and Translated Text
 
 I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that the original legal terms and their corresponding translations were provided in a structured format. 
-```
+`````
 import json
 
 few_shot_prompt = """
@@ -143,7 +143,7 @@ response = client.models.generate_content(
         'response_mime_type': 'application/json'
     },
 )
-```
+`````
 
 The results were shown below:
 
