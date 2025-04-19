@@ -30,13 +30,38 @@ This step-by-step approach allowed me to create a tool that I hope makes those o
 
 My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure the key once obtained it.
 
+```
+from kaggle_secrets import UserSecretsClient
+
+client = genai.Client(api_key=UserSecretsClient().get_secret("GOOGLE_API_KEY"))
+```
+
 With the technical setup done, I needed a Terms of Service document. To avoid copyright issues with real-world examples, I created my own for a quirky fictitious company named "Dig-A-Hole." This company offers a subscription for digging holes in a field as a stress reliever and form of exercise. I outlined the service's terms and saved it in a PDF.
 
 ### Selecting a Model and Reading the PDF document
 
 When I first started, the gemini-1.5-pro model caught my eye, mainly due to its massive context window. I figured, the longer the Terms of Service, the better this model would handle it. However, as things progressed and I started evaluating the output, my model choice actually changed, a little surprise I'll elaborate on later.
 
-So, with the model chosen, I proceeded to the first task: summarizing our "Dig-A-Hole" Terms of Service. I used a simple prompt: "Please summarize the following terms of service in plain, easy-to-understand English." The resulting summary was quite good, providing a clear and easy-to-grasp overview, which looked like this:
+So, with the model chosen, I proceeded to the first task: summarizing our "Dig-A-Hole" Terms of Service. I used a simple prompt: "Please summarize the following terms of service in plain, easy-to-understand English." 
+```
+request = 'Please summarize the following terms of service in plain, easy-to-undersand English:'
+
+def translate_doc(request: str) -> str:
+  """Execute the request on the uploaded document."""
+  # Set the temperature low to stabilise the output.
+  config = types.GenerateContentConfig(temperature=0.0)
+  response = client.models.generate_content(
+      model='gemini-1.5-pro',
+      config=config,
+      contents=[request, document_file],
+  )
+
+  return response.text
+
+summary = translate_doc(request)
+```
+
+The resulting summary was quite good, providing a clear and easy-to-grasp overview, which looked like this:
 
 `````
 Dig-A-Hole's Terms of Service basically say:
@@ -53,7 +78,7 @@ While this was clear, it felt a little… formal. I wanted to inject some person
 
 One of the cool techniques I picked up during the Gen AI Intensive Course was "Few-Shot Prompting." It's like giving Gemini a few examples to learn from, showing it the style and tone you're aiming for. I wanted the translations to be more casual and friendly, sprinkled with some relevant emoji. So, I provided Gemini with a few examples like this:
 
-~~~
+```
 few_shot_prompt = """
 Here are some examples of how to translate legal terms of service and their friendly summaries using emoji:
 
@@ -65,7 +90,14 @@ Translated: "Oops! If you trip, slip, or fall dramatically and get hurt while us
 
 Please summarize the following terms of service in plain, easy-to-undersand English with emoji.
 """
-~~~
+
+response = client.models.generate_content(
+    model='gemini-1.5-pro',
+    config=model_config,
+    contents=[few_shot_prompt, document_file],
+)
+
+```
 
 Here, I was essentially asking Gemini to channel its inner friendly neighbor. I made sure to include emoji in the examples and explicitly asked for them in the final translation. The results were exactly what I was hoping for. Much more casual and fun!
  
@@ -83,7 +115,37 @@ As you can see, Few-Shot Prompting is a relatively straightforward technique tha
 
 ### Pairing Original and Translated Text
 
-I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that the original legal terms and their corresponding translations were provided in a structured format. The results were shown below:
+I was really happy with the friendlier translations achieved with Few-Shot Prompting. However, I then had another idea. What if I could display the original legal terms directly alongside their easy-to-understand translations? That way, the users can see exactly what was changed or clarified if they want. To achieve this structured output, I utilized the Gemini AI's capability to return responses in JSON format. This was activated by specifying the `response_mime_type` as `application/json` in my request to the API. This ensures that the original legal terms and their corresponding translations were provided in a structured format. 
+```
+import json
+
+few_shot_prompt = """
+Please translate the following terms of service to more casual,friendly, easy-to-understand English with emoji. The output should be a JSON array and each element is
+a JSON object with the "Original" and "Translated" version.
+Here are some examples of how to translate leagal terms of service and their friendly summaries using emoji:
+```
+{
+Original: "We reserve the right to accept or refuse membership in our discretion." 
+Translated: "We get to say yay 👍 or nay 👎 to memberships, just because we can💪!"
+}
+{
+Original: "To the maximum extent permitted by law, you agree that the Company shall not be held liable for any injuries, damages, or losses incurred in connection with the use of our services or products. By using our services, you waive any right to bring a claim or lawsuit against us for such injuries."
+Translated: "Oops!😳 If you trip, slip, or fall dramatically and get hurt🤕 while using our stuff, please don’t sue us 😅🙏. By hanging out with us, you're saying, 'Okay cool, I won't blame you if I bonk myself💖'"
+}
+```
+
+"""
+
+response = client.models.generate_content(
+    model='gemini-1.5-pro',
+    contents= [few_shot_prompt, document_file],
+    config={
+        'response_mime_type': 'application/json'
+    },
+)
+```
+
+The results were shown below:
 
 `````
 [
@@ -107,6 +169,112 @@ My goal was to make those intimidating Terms of Service feel like a friendly cha
 * **Completeness:** Is it accurate? Does it fully conveys the core meaning, and are key pieces of information presented? All the essential facts, actions, entities, and relationships described need to be captured.
 
 To get a sense of this, I also set up a simple rating scale from 1 (very bad) to 5 (very good) and evaluated a few examples.
+
+```
+import enum
+
+# Define the evaluation prompt for evaluating the "Translated" text
+TRANSLATION_EVAL_PROMPT = """\
+# Instruction
+You are an expert evaluator. Your task is to evaluate the quality of the AI-generated translation of a sentence from a terms of service
+document.
+We will provide you with the original sentence and the AI-generated translation.
+You should first read the original sentence carefully, then evaluate the quality of the translation based on the Criteria 
+provided in the Evaluation section below.
+You will assign the translation a rating following the Rating Rubric and Evaluation Steps. Give step-by-step explanations 
+for your rating, and only choose ratings from the Rating Rubric.
+
+# Evaluation
+## Metric Definition
+You will be assessing the translation Clarity, friendliness and Completeness.
+
+## Criteria
+Clarity: The translation prioritizes making the core meaning immediately accessible and easy to understand for everyone, 
+even those unfamiliar with legal terms. It uses simple language and relatable analogies to convey the essential information effectively.
+Friendliness: The translation adopts an extremely approachable, casual, and enthusiastic tone, using emojis and informal language 
+to create a positive and engaging experience for the reader. The high level of friendliness is intentional to make the legal terms 
+feel less intimidating and more welcoming.
+Completeness: Completeness: The translation accurately and fully conveys the core meaning and key pieces of information presented 
+in the original sentence. It should capture all the essential facts, actions, entities, and relationships described, 
+even if expressed in simpler language. The level of detail in the translation should be sufficient to understand the main points 
+of the original without losing critical information.
+
+## Rating Rubric
+5: (Very good). The translation is accurate, clear, friendly, and complete.
+4: (Good). The translation is mostly accurate, clear, friendly, and complete.
+3: (Ok). The translation is understandable but may have minor issues with accuracy, clarity, or friendliness. Emojis might 
+be missing or slightly awkward.
+2: (Bad). The translation has significant issues with accuracy or clarity, or fails to adopt a friendly tone.
+1: (Very bad). The translation is inaccurate, incomprehensible, or completely fails to address the original meaning.
+
+## Evaluation Steps
+STEP 1: Assess the translation in aspects of clarity, friendliness, and completeness according to the criteria.
+STEP 2: Score based on the rubric.
+
+# User Inputs and AI-generated Response
+## Original Sentence
+
+{original}
+
+## AI-generated Translation
+
+{response}
+"""
+
+# Define a structured enum class to capture the result.
+class SummaryRating(enum.Enum):
+    VERY_GOOD = '5'
+    GOOD = '4'
+    OK = '3'
+    BAD = '2'
+    VERY_BAD = '1'
+
+def eval_translation(original, ai_response):
+    """Evaluate the generated translation against the original sentence."""
+
+    # It doesn't look like I can use chat with gemini-1.5-pro. Using gemini-2.0-flash here.
+    chat = client.chats.create(model='gemini-2.0-flash')
+    
+    # Generate the full text response.
+    response = chat.send_message(
+        message=TRANSLATION_EVAL_PROMPT.format(original=original, response=ai_response)
+    )
+    verbose_eval = response.text
+    
+    # Coerce into the desired structure.
+    structured_output_config = types.GenerateContentConfig(
+        response_mime_type="text/x.enum",
+        response_schema=SummaryRating,
+    )
+    response = chat.send_message(
+        message="Convert the final score.",
+        config=structured_output_config,
+    )
+    structured_eval = response.parsed
+    
+    return verbose_eval, structured_eval
+
+# Ideally, I want to check everything but I don't have enough quota. So, iterating only first three elements.
+evaluation_results = []
+for item in response_load[:3]:
+    original_text = item['Original']
+    translated_text = item['Translated']
+    verbose_eval, structured_eval = eval_translation(original=original_text, ai_response=translated_text)
+
+    evaluation_results.append({
+        'original': original_text,
+        'translated': translated_text,
+        'verbose_evaluation': verbose_eval,
+        'structured_evaluation': structured_eval.name if structured_eval else None
+    })
+
+for result in evaluation_results:
+    print(f"Original: {result['original']}")
+    print(f"Translated: {result['translated']}")
+    print(f"Verbose Evaluation:\n{result['verbose_evaluation']}")
+    print(f"Structured Evaluation: {result['structured_evaluation']}")
+    print("-" * 20)
+```
 
 Let's look at the evaluation of one of the terms.
 
@@ -148,19 +316,84 @@ Here’s how it works:
 2. When someone asks a question (like “What is the cancellation policy?”), the question is also turned into its own embedding.
 3. The system compares the question’s embedding to the document’s embeddings to find the most relevant sections.
 4. Finally, the AI takes those chunks and generates a helpful, plain-English answer with a friendly tone and even some emojis! 🎯✨
-    
-For example, this is a Prompt, Question and Passage which the AI found the information:
 
-`````
-You are a very friendly bot that answers questions using text from the reference passage included below.
+Here's a snippet of my code:
+
+This custom function grabs the document chunks and send it to Gemini AI. Gemini then figures out the core meaning of the text and sends that meaning back.
+```
+class GeminiEmbeddingFunction(EmbeddingFunction):
+    # Specify whether to generate embeddings for documents, or queries
+    document_mode = True
+
+    @retry.Retry(predicate=is_retriable)
+    #def __call__(self, input: all_paragraphs) -> Embeddings:
+    def __call__(self, input: document_file) -> Embeddings:
+        if self.document_mode:
+            embedding_task = "retrieval_document"
+        else:
+            embedding_task = "retrieval_query"
+
+        resp = client.models.embed_content(
+            model="models/text-embedding-004",
+            contents=input,
+            config=types.EmbedContentConfig(
+                task_type=embedding_task,
+            ),
+        )
+        return [e.values for e in resp.embeddings]
+```
+
+Below, this is where my document chunks are sent, which ChromaDB undersands and add them to "googlecardb."
+```
+mport chromadb
+
+DB_NAME = "googlecardb"
+
+embed_fn = GeminiEmbeddingFunction()
+embed_fn.document_mode = True
+
+chroma_client = chromadb.Client()
+db = chroma_client.get_or_create_collection(name=DB_NAME, embedding_function=embed_fn)
+
+db.add(documents=all_paragraphs, ids=[str(i) for i in range(len(all_paragraphs))])
+```
+
+And then the query is entered. The question gets its meaning from Gemini, and ChromaDB users to find the similar chunks.
+```
+# Switch to query mode when generating embeddings.
+embed_fn.document_mode = False
+
+# Search the Chroma DB using the specified query.
+query = "What is the cancellation policy?"
+
+result = db.query(query_texts=[query], n_results=1) 
+[all_passages] = result["documents"]
+
+Markdown(all_passages[0])
+```
+
+Ok, this is it!  After creating a prompt, generate a friendly answer!
+
+```
+query_oneline = query.replace("\n", " ")
+
+prompt = f"""You are a very friendly bot that answers questions using text from the reference passage included below.
 Be sure to respond in a complete sentence, but being casual and very friendly. Make sure to include some appropriate emoji.
 You need to use easy-to-understand English instead of using legal terms. If the passage is irrelevant to the answer, you
 may say that you can not find the information.
 
-QUESTION: What is the cancellation policy?
+QUESTION: {query_oneline}
 
-PASSAGE: 3. Subscription Terms and Payment ● Minimum Subscription Period: All subscriptions have a minimum commitment of one (1) full month. ● Subscription Fees: The monthly subscription fee will be clearly communicated on our website or at our facility. ● Billing: Subscription fees will be billed on a recurring monthly basis, commencing on the date of your initial subscription. ● Payment Methods: We accept the payment methods specified on our website or at our facility. You agree to provide accurate and up-to-date payment information. ● Cancellation: You may cancel your subscription at any time. However, due to the minimum one-month commitment, you will be responsible for the full payment of the current billing cycle in which you cancel, and your access will continue until the end of that paid month. No refunds will be provided for partial months.
-`````
+model_config=types.GenerateContentConfig(temperature=0.0)
+answer = client.models.generate_content(
+    model="gemini-2.0-flash",
+    config=model_config,
+    contents=prompt
+)
+
+Markdown(answer.text)
+"""
+```
 
 And the AI's answer to the question "what is the cancellation policy?" is:
 
