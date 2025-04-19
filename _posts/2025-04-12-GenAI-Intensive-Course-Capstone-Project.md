@@ -402,13 +402,21 @@ This feature turns a static document into an interactive experience. It’s stil
 
 Now, you might be thinking, "Could I just use a few-shot prompt for this?" You could certainly try feeding the entire Terms of Service to the AI and asking something like, “What's the cancellation policy?” And you know what? That probably works. But what I quickly discovered in my testing is that RAG is often significantly more reliable, especially when the answer isn't explicitly in the document. For example, if someone asks “What is the rental shoes policy?” and that topic isn’t covered in the document, the few-shot prompt version might confidently provide an answer about something like shovel rentals, which is entirely unrelated. With RAG, because it's retrieving information directly from the document, it's much better at saying "I don't know" instead of making things up, which ultimately builds more trust.
 
+## Technology Limitations
+
+While this project was really interesting and fun for me, it's important to remember that even though Gen AI is great at making complicated stuff easier to understand, legal documents are a different beast. Lawyers use super specific words, and when you try to simplify things, there's a chance you might accidentally lose some of the original legal meaning. So, think of these translations as a helpful way to get the general idea, not as official legal advice. Also, even though I'm not a legal expert, it makes sense that laws and regulations change all the time. To keep this kind of translator accurate, it would need constant updates and retraining to keep up with the latest legal changes.
+
 ## Conclusion
 
 I'm excited to share a solution that makes Terms of Service much easier to understand, all thanks to the cool techniques I picked up during the 5 Day Gen AI Intensive Course. This project tackles the challenge of dense legal language by translating it into clear, accessible English something I found particularly rewarding to build. The interactive "Ask Away!" feature further empowers users to easily find the specific legal information they need.
 
-## Future Work Recommendation
+## Future Work Recommendation and Future Art-of-Possible
 
-This was a really fun project to tackle in a short amount of time! For the future project idea, it would be fun to explore expanding it by supporting a wider range of legal document types beyond just Terms of Service, like privacy policies or even parts of contracts, and perhaps even adding the ability to read Terms of Service directly from a URL. Another interesting direction could involve incorporating user feedback mechanisms to continuously refine the translation quality and tailor the output to better meet individual comprehension needs.  
+This was a really fun project to tackle in a short amount of time! For the future project idea, it would be exciting to explore expanding its capabilities beyond Terms of Service. Imagine the possibilities of supporting a wider range of legal document types, like privacy policies or even parts of contracts, and perhaps even adding the ability to read these documents directly from a URL. Another interesting direction could involve incorporating user feedback mechanisms to continuously refine the translation quality and tailor the output to better meet individual comprehension needs.
+
+Building on this, I also envision a future where this technology could tackle even more complex and personally significant documents. Consider the potential of AI to translate healthcare policies, including the often-complicated Medicare and Medicaid regulations, as well as tax documents. By making these critical pieces of information more easily understandable, individuals can be empowered to make more informed decisions about their health and finances.
+
+Thinking even further down the road, it would be super cool if this could become more than just a translator. Maybe it could evolve into a real interactive helper for legal stuff, answering people's specific questions and even pointing out potential gotchas in documents. 
 
 
 
