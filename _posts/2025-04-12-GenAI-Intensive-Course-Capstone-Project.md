@@ -28,7 +28,7 @@ This step-by-step approach allowed me to create a tool that I hope makes those o
 
 ### Initial Setup
 
-My coding for this Gen AI Intensive Course project, hosted on Kaggle, began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure the key once obtained it.
+My coding for this Gen AI Intensive Course project began with obtaining the necessary API key to access Google's AI models. Google Cloud AI Platform documentation provides the steps for this, and it's important to secure the key once obtained it.
 
 ```
 from kaggle_secrets import UserSecretsClient
