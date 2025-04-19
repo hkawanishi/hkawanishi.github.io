@@ -304,9 +304,7 @@ Overall, my initial evaluation suggests that the Gen AI translator is doing a pr
 
 ### Ask Away! Making the Terms of Service Interactive
 
-I was really happy with how the friendly translator turned out! But then I started thinking, "What could make this even cooler?" While this wasn’t part of my original project plan, I decided to go on a little side quest: making the Terms of Service interactive.
-
-This part of the project is a sneak peek into what a "version 2.0" could look like. It allows users to ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
+I was really happy with how the friendly translator turned out! But then I started thinking, "What could make this even cooler?" While this wasn’t part of my original project plan, I decided to go on a little side quest: making the Terms of Service interactive. So basically, it allows users to ask specific questions and get AI-powered answers pulled directly from the document. Instead of reading through the entire (even if simplified) Terms of Service, users can just ask what they need to know. This makes navigating even the most boring legal docs faster, friendlier, and way more useful.
 
 To make this happen, I used a technique called Retrieval-Augmented Generation (RAG). Think of it like giving the AI a superpower to “search” through the **provided document** for the best answers to your questions. This is key because RAG ensures that the answers come directly from the Terms of Service document rather than the AI making things up or pulling information from elsewhere. It's kind of like an ultra helpful chatbot with a legal cheat sheet. 
 
